@@ -111,9 +111,5 @@ def calcHomogeneityIndex(df):
 
 	return homogeneity_ix
 
-	# fig = plt.figure()
-	# ax = fig.add_subplot(111)
-	# ax.hist(homogeneity_ix[~np.isnan(homogeneity_ix)])
-	# ix_min = np.linalg.norm(np.ones(5) / 5.)
-	# ax.axvline(ix_min, color='r', ls='--')
-
+doc = minidom.parse('map.osm')
+osm = doc.GetElementsByTagName('osm')[0]
