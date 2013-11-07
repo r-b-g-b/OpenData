@@ -1,3 +1,16 @@
+Ideas:
+Incorporate a model of what different target variables mean.
+For example, a vote means explicit approval for the project.
+A view means general interest, and a combination of positive and negative.
+A comment means extreme interest, but could be extreme positive or extreme negative.
+(Looking at the data, it's clear that num_comments are not very well predicted by the Features,
+this could be because a comment indicates someone who shows strong interest, but if it isn't
+matched with a vote, it could mean strong disapproval). 
+Possibly implement a HMM, with hidden nodes that are estimated from the Features described here.
+General interest
+Agreement
+Disagreement
+
 n = number of samples in the set
 
 Run 1:
@@ -8,6 +21,8 @@ Score: 0.6204
 
 Run 2:
 same as Run 1 but added Nchar
+
+Score: 0.6224
 
 # Features
 ## Bag of words
