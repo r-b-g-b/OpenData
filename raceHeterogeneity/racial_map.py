@@ -20,21 +20,21 @@ P4. 3 columns [12:15]
 P5. 17 columns [15:32]
 '''
 
-def plotEastBay():
+def plotEastBay(ax=None):
+	if ax is None: fig, ax = plt.subplots()
 	df = pd.read_csv('raceData.csv')
 	df_geo = pd.read_csv('LatLon.csv')
-	lat_lim = (37.6, 38.0)
-	lon_lim = (-122.35, -122.14)
+	lat_lim = (37.839583384232007, 37.90618479880775)
+	lon_lim = (-122.30799920903472, -122.23802834898422)
 	ix = np.vstack((df_geo.lat<lat_lim[1], df_geo.lat>lat_lim[0], df_geo.lon<lon_lim[1], df_geo.lon>lon_lim[0])).all(0)
 	df_geo = df_geo[ix]
 
-	fig = plt.figure()
-	ax = fig.add_subplot(111)
+
 	for i, row in df_geo.iterrows():
 		if i in df.index:
 			hi = df.ix[i]['HI']
-			color = plt.cm.jet(int(256-(hi*256)))
-			ax.plot(row['lon'], row['lat'], '.', ms=0.5, color = color)
+			color = plt.cm.jet(int(256-(1.78*(hi-0.44)*256)))
+			ax.plot(row['lon'], row['lat'], '.', ms=5, color = color)
 
 def loadGeoData(skiprows=0, nrows = 10):
 
@@ -110,6 +110,3 @@ def calcHomogeneityIndex(df):
 		homogeneity_ix[i] = np.linalg.norm(x)
 
 	return homogeneity_ix
-
-doc = minidom.parse('map.osm')
-osm = doc.GetElementsByTagName('osm')[0]

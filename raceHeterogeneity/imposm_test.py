@@ -1,5 +1,7 @@
 from imposm.parser import OSMParser
 import pandas as pd
+from matplotlib import pyplot as plt
+
 # simple class that handles the parsed OSM data.
 
 styles = dict(primary=dict(lw=1, c='b'), primary_link=dict(lw=1, c='b'),
@@ -33,32 +35,44 @@ class Parser(object):
         for relation in relations:
             self.relations.append(relation)
 
-# instantiate counter and parser and start parsing
-osm = Parser()
-p = OSMParser(concurrency=2,
-	ways_callback=osm.ways_callback,
-	coords_callback=osm.coords_callback,
-	nodes_callback=osm.nodes_callback)
+def parse(fpath):
 
-p.parse('map.osm')
+    # instantiate counter and parser and start parsing
+    osm = Parser()
+    p = OSMParser(concurrency=2,
+    	ways_callback=osm.ways_callback,
+    	coords_callback=osm.coords_callback,
+    	nodes_callback=osm.nodes_callback)
 
-# put coordinate lat/longs in a referencable DataFrame
-ref, lat, lon = zip(*osm.coords)
-df = pd.DataFrame(dict(lat=lat, lon=lon), index=ref)
+    p.parse(fpath)
 
-# plot berkeley
-fig, ax = plt.subplots()
-ax.set_aspect('equal')
-for osm_id, tags, refs in osm.ways:
-    coords = df.ix[refs]
-    if tags['highway'] in styles.keys():
-        style = styles[tags['highway']]
-        ax.plot(coords.lat, coords.lon, lw=0.2, c='k')
+    return osm
+
+def drawmap(osm):
+
+    # put coordinate lat/longs in a referencable DataFrame
+    ref, lat, lon = zip(*osm.coords)
+    df = pd.DataFrame(dict(lat=lat, lon=lon), index=ref)
+
+    # plot berkeley
+    fig, ax = plt.subplots()
+    ax.set_aspect('equal')
+    for osm_id, tags, refs in osm.ways:
+        coords = df.ix[refs]
+        if tags['highway'] in styles.keys():
+            style = styles[tags['highway']]
+            ax.plot(coords.lat, coords.lon, lw=0.2, c='k')
+
+    return ax
+
+
 
 def whatKeys():
+
     ref_keys = set()
     for osm_id, tags, refs in osm.ways:
         ref_keys.add(tags['highway'])
-
+    print ref_keys
+    return ref_keys
 
 
