@@ -2,9 +2,12 @@ n = number of samples in the set
 
 Run 1:
 Linear Regression (sklearn.linear_model.LinearRegression)
-Log10(depvars+10) ~ Bag of words + City + Nchar + Tags + Source
+Log10(depvars+10) ~ Bag of words + City + Tags + Source
 
 Score: 0.6204
+
+Run 2:
+same as Run 1 but added Nchar
 
 # Features
 ## Bag of words
